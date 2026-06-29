@@ -1,0 +1,18 @@
+UnlimitedVoid/
+│
+├── index.html
+├── main.js
+├── Renderer.js
+├── Scene.js
+├── ShaderLoader.js
+│
+├── objects/
+│   ├── BlackHole.js
+│   ├── AccretionDisk.js
+│   ├── ParticleField.js
+│   ├── Nebula.js
+│   ├── AsteroidField.js
+│   └── CameraRig.js
+│
+├── shaders/
+│   ├── ...

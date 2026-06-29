@@ -2,12 +2,18 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Unlimited Void</title>
 
     <style>
+
         *{
             margin:0;
             padding:0;
@@ -16,71 +22,119 @@
 
         html,
         body{
+
             width:100%;
             height:100%;
             overflow:hidden;
             background:#000;
-            font-family:Arial, Helvetica, sans-serif;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
         }
 
         canvas{
+
             display:block;
+
         }
 
         #loading{
+
             position:fixed;
+
             inset:0;
+
             display:flex;
             justify-content:center;
             align-items:center;
+
             background:#000;
-            color:#9ecbff;
+
+            color:#8dc7ff;
+
             letter-spacing:8px;
+
             font-size:18px;
-            z-index:100;
-            transition:opacity .8s;
+
+            z-index:999;
+
+            transition:
+                opacity .6s;
+
         }
 
-        #loading.hide{
+        #loading.hidden{
+
             opacity:0;
             pointer-events:none;
+
         }
 
         #title{
+
             position:fixed;
+
             top:30px;
             left:50%;
+
             transform:translateX(-50%);
+
             color:white;
+
             font-size:18px;
+
             letter-spacing:10px;
-            opacity:.8;
-            pointer-events:none;
+
+            opacity:.75;
+
             user-select:none;
+
+            pointer-events:none;
+
+            z-index:20;
+
         }
+
     </style>
+
 </head>
 
 <body>
 
-<div id="loading">
-    INITIALIZING VOID
-</div>
+    <div id="loading">
 
-<div id="title">
-    UNLIMITED VOID
-</div>
+        INITIALIZING VOID
 
-<script type="importmap">
-{
-    "imports": {
-        "three":"https://unpkg.com/three@0.170.0/build/three.module.js",
-        "three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/"
+    </div>
+
+    <div id="title">
+
+        UNLIMITED VOID
+
+    </div>
+
+    <script type="importmap">
+
+    {
+        "imports":{
+
+            "three":"https://unpkg.com/three@0.170.0/build/three.module.js",
+
+            "three/addons/":"https://unpkg.com/three@0.170.0/examples/jsm/"
+
+        }
     }
-}
-</script>
 
-<script type="module" src="./main.js"></script>
+    </script>
+
+    <script
+        type="module"
+        src="./main.js"
+    ></script>
 
 </body>
+
 </html>

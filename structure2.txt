@@ -21,22 +21,6 @@ UnlimitedVoid/
 │
 ├── shaders/
 │
-│   ├── blackhole/
-│   │   ├── blackhole.vert
-│   │   └── blackhole.frag
-│   │
-│   ├── accretion/
-│   │   ├── accretion.vert
-│   │   └── accretion.frag
-│   │
-│   ├── particles/
-│   │   ├── particles.vert
-│   │   └── particles.frag
-│   │
-│   └── nebula/
-│       ├── nebula.vert
-│       └── nebula.frag
-│
 ├── textures/
 │
 └── README.md

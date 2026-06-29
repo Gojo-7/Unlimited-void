@@ -10,6 +10,7 @@ import { ShaderLoader } from "./ShaderLoader.js";
 import { LIGHTING } from "./Constants.js";
 
 import { BlackHole } from "../objects/BlackHole.js";
+import { AccretionDisk } from "../objects/AccretionDisk.js";
 
 export class App {
 
@@ -70,12 +71,22 @@ export class App {
                 "./shaders/blackhole/fragment.glsl"
 
             );
+        
+        const accretionShaders =
+
+            await this.shaderLoader.loadProgram(
+
+                "./shaders/accretion/vertex.glsl",
+
+                "./shaders/accretion/fragment.glsl"
+
+            );
 
         //////////////////////////////////////////////////////
         // CREATE OBJECTS
         //////////////////////////////////////////////////////
 
-        this.objects.push(
+        const blackHole =
 
             new BlackHole(
 
@@ -83,7 +94,23 @@ export class App {
 
                 blackHoleShaders
 
-            )
+            );
+
+        const accretionDisk =
+
+            new AccretionDisk(
+
+                this.scene.get(),
+
+                accretionShaders
+
+            );
+
+        this.objects.push(
+
+            blackHole,
+
+            accretionDisk
 
         );
 

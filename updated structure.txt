@@ -20,22 +20,18 @@ UnlimitedVoid/
 │   └── CameraRig.js
 │
 ├── shaders/
-│
 │   ├── blackhole/
-│   │   ├── blackhole.vert
-│   │   └── blackhole.frag
-│   │
 │   ├── accretion/
-│   │   ├── accretion.vert
-│   │   └── accretion.frag
-│   │
 │   ├── particles/
-│   │   ├── particles.vert
-│   │   └── particles.frag
-│   │
 │   └── nebula/
-│       ├── nebula.vert
-│       └── nebula.frag
+│
+├── postprocessing/
+│   └── PostProcessing.js
+│
+├── utils/
+│   ├── MathUtils.js
+│   ├── Noise.js
+│   └── GeometryUtils.js
 │
 ├── textures/
 │

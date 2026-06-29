@@ -2,9 +2,9 @@ import * as THREE from "three";
 
 import { CAMERA } from "./Constants.js";
 
-export class Camera{
+export class Camera {
 
-    constructor(){
+    constructor() {
 
         //////////////////////////////////////////////////////
         // CAMERA
@@ -30,25 +30,8 @@ export class Camera{
 
         this.instance.position.copy(
 
-            CAMERA.startPosition
+            CAMERA.position
 
-        );
-
-        //////////////////////////////////////////////////////
-        // DEFAULT LOOK TARGET
-        //////////////////////////////////////////////////////
-
-        this.target =
-        new THREE.Vector3(
-
-            0,
-            0,
-            0
-
-        );
-
-        this.instance.lookAt(
-            this.target
         );
 
     }
@@ -57,7 +40,7 @@ export class Camera{
     // GET CAMERA
     //////////////////////////////////////////////////////////
 
-    get(){
+    get() {
 
         return this.instance;
 
@@ -67,35 +50,9 @@ export class Camera{
     // LOOK AT
     //////////////////////////////////////////////////////////
 
-    lookAt(x,y,z){
+    lookAt(target) {
 
-        if(
-
-            x instanceof THREE.Vector3
-
-        ){
-
-            this.target.copy(x);
-
-        }
-
-        else{
-
-            this.target.set(
-
-                x,
-                y,
-                z
-
-            );
-
-        }
-
-        this.instance.lookAt(
-
-            this.target
-
-        );
+        this.instance.lookAt(target);
 
     }
 
@@ -103,35 +60,15 @@ export class Camera{
     // SET POSITION
     //////////////////////////////////////////////////////////
 
-    setPosition(
+    setPosition(x, y, z) {
 
-        x,
-        y,
-        z
+        this.instance.position.set(
 
-    ){
+            x,
+            y,
+            z
 
-        if(
-
-            x instanceof THREE.Vector3
-
-        ){
-
-            this.instance.position.copy(x);
-
-        }
-
-        else{
-
-            this.instance.position.set(
-
-                x,
-                y,
-                z
-
-            );
-
-        }
+        );
 
     }
 
@@ -139,7 +76,7 @@ export class Camera{
     // GET POSITION
     //////////////////////////////////////////////////////////
 
-    getPosition(){
+    getPosition() {
 
         return this.instance.position;
 
@@ -149,37 +86,13 @@ export class Camera{
     // RESIZE
     //////////////////////////////////////////////////////////
 
-    resize(){
+    resize(width, height) {
 
         this.instance.aspect =
 
-            window.innerWidth /
-
-            window.innerHeight;
+            width / height;
 
         this.instance.updateProjectionMatrix();
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // RESET
-    //////////////////////////////////////////////////////////
-
-    reset(){
-
-        this.instance.position.copy(
-
-            CAMERA.startPosition
-
-        );
-
-        this.lookAt(
-
-            0,
-            0,
-            0
-
-        );
 
     }
 

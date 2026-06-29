@@ -1,0 +1,102 @@
+uniform float uTime;
+
+varying vec3 vWorldPosition;
+varying vec3 vNormal;
+varying vec3 vViewDirection;
+varying vec2 vUv;
+
+void main() {
+
+    //////////////////////////////////////////////////////
+    // UV
+    //////////////////////////////////////////////////////
+
+    vUv = uv;
+
+    //////////////////////////////////////////////////////
+    // POSITION
+    //////////////////////////////////////////////////////
+
+    vec3 positionLocal = position;
+
+    //////////////////////////////////////////////////////
+    // SUBTLE EVENT HORIZON PULSE
+    //////////////////////////////////////////////////////
+
+    float pulse =
+
+        sin(
+
+            uTime * 0.8 +
+
+            length(position) * 3.0
+
+        ) * 0.015;
+
+    positionLocal +=
+
+        normal *
+
+        pulse;
+
+    //////////////////////////////////////////////////////
+    // WORLD POSITION
+    //////////////////////////////////////////////////////
+
+    vec4 worldPosition =
+
+        modelMatrix *
+
+        vec4(
+
+            positionLocal,
+
+            1.0
+
+        );
+
+    vWorldPosition =
+
+        worldPosition.xyz;
+
+    //////////////////////////////////////////////////////
+    // NORMAL
+    //////////////////////////////////////////////////////
+
+    vNormal =
+
+        normalize(
+
+            mat3(modelMatrix) *
+
+            normal
+
+        );
+
+    //////////////////////////////////////////////////////
+    // VIEW DIRECTION
+    //////////////////////////////////////////////////////
+
+    vViewDirection =
+
+        normalize(
+
+            cameraPosition -
+
+            worldPosition.xyz
+
+        );
+
+    //////////////////////////////////////////////////////
+    // OUTPUT
+    //////////////////////////////////////////////////////
+
+    gl_Position =
+
+        projectionMatrix *
+
+        viewMatrix *
+
+        worldPosition;
+
+}

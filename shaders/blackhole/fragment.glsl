@@ -1,40 +1,62 @@
 uniform float uTime;
 
-varying vec2 vUv;
 varying vec3 vWorldPosition;
-varying float vRadius;
-varying float vIntensity;
+varying vec3 vNormal;
+varying vec3 vViewDirection;
+varying vec2 vUv;
 
 #define PI 3.14159265359
+
+//////////////////////////////////////////////////////////////
+// SIMPLE HASH
+//////////////////////////////////////////////////////////////
 
 float hash(vec2 p){
 
     return fract(
+
         sin(
+
             dot(
+
                 p,
+
                 vec2(
                     127.1,
                     311.7
                 )
+
             )
+
         ) * 43758.5453123
+
     );
 
 }
 
+//////////////////////////////////////////////////////////////
+// VALUE NOISE
+//////////////////////////////////////////////////////////////
+
 float noise(vec2 p){
 
     vec2 i = floor(p);
+
     vec2 f = fract(p);
 
     float a = hash(i);
-    float b = hash(i+vec2(1.0,0.0));
-    float c = hash(i+vec2(0.0,1.0));
-    float d = hash(i+vec2(1.0,1.0));
+
+    float b = hash(i + vec2(1.0,0.0));
+
+    float c = hash(i + vec2(0.0,1.0));
+
+    float d = hash(i + vec2(1.0,1.0));
 
     vec2 u =
-    f*f*(3.0-2.0*f);
+
+        f * f *
+
+        (3.0 - 2.0 * f);
 
     return
 
@@ -53,147 +75,164 @@ float noise(vec2 p){
 void main(){
 
     //////////////////////////////////////////////////////////
-    // RADIAL COORDINATES
+    // UV
     //////////////////////////////////////////////////////////
 
     vec2 p =
 
         vUv * 2.0 - 1.0;
 
-    float r =
+    float radius =
 
         length(p);
 
     float angle =
 
         atan(
+
             p.y,
+
             p.x
+
         );
 
     //////////////////////////////////////////////////////////
-    // TURBULENCE
+    // FRESNEL
     //////////////////////////////////////////////////////////
 
-    float n =
+    float fresnel =
+
+        pow(
+
+            1.0 -
+
+            max(
+
+                dot(
+
+                    normalize(vNormal),
+
+                    normalize(vViewDirection)
+
+                ),
+
+                0.0
+
+            ),
+
+            5.0
+
+        );
+
+    //////////////////////////////////////////////////////////
+    // ENERGY
+    //////////////////////////////////////////////////////////
+
+    float energy =
 
         noise(
 
             vec2(
 
-                angle*3.0 +
+                angle * 4.0 +
 
-                uTime*0.35,
+                uTime * 0.35,
 
-                r*10.0
+                radius * 8.0
 
             )
 
         );
 
-    n +=
+    energy +=
 
         noise(
 
             vec2(
 
-                angle*8.0 -
+                angle * 10.0 -
 
-                uTime*0.8,
+                uTime,
 
-                r*18.0
+                radius * 18.0
 
             )
 
-        )*0.5;
+        ) * 0.5;
 
     //////////////////////////////////////////////////////////
-    // PLASMA FLOW
+    // GLOW
     //////////////////////////////////////////////////////////
 
-    float flow =
+    float glow =
 
-        sin(
+        smoothstep(
 
-            angle*18.0 +
+            1.15,
 
-            uTime*4.5 +
+            0.45,
 
-            r*28.0 +
-
-            n*8.0
+            radius
 
         );
 
-    flow =
-
-        flow*0.5+0.5;
-
     //////////////////////////////////////////////////////////
-    // RINGS
+    // HORIZON
     //////////////////////////////////////////////////////////
 
-    float rings =
+    float horizon =
 
-        sin(
+        smoothstep(
 
-            vRadius*7.0 -
+            0.52,
 
-            uTime*3.0
+            0.46,
+
+            radius
 
         );
-
-    rings =
-
-        rings*0.5+0.5;
 
     //////////////////////////////////////////////////////////
     // COLORS
     //////////////////////////////////////////////////////////
 
-    vec3 deep = vec3(
+    vec3 black = vec3(0.0);
 
-        0.02,
-        0.06,
-        0.20
+    vec3 deepBlue = vec3(
 
-    );
+        0.03,
 
-    vec3 blue = vec3(
+        0.07,
 
-        0.18,
-        0.58,
-        1.0
+        0.22
 
     );
 
     vec3 cyan = vec3(
 
-        0.72,
-        0.95,
-        1.0
+        0.45,
 
-    );
-
-    vec3 white = vec3(
+        0.78,
 
         1.0
 
     );
+
+    vec3 white = vec3(1.0);
 
     //////////////////////////////////////////////////////////
-    // COLOR MIX
+    // COLOR
     //////////////////////////////////////////////////////////
 
     vec3 color =
 
         mix(
 
-            deep,
+            black,
 
-            blue,
+            deepBlue,
 
-            n
+            glow * 0.35
 
         );
 
@@ -205,7 +244,7 @@ void main(){
 
             cyan,
 
-            flow*0.6
+            energy * 0.25
 
         );
 
@@ -213,51 +252,43 @@ void main(){
 
         white *
 
-        pow(
+        fresnel *
 
-            rings,
+        0.9;
 
-            5.0
+    color =
 
-        ) *
+        mix(
 
-        0.35;
+            color,
 
-    color +=
+            black,
 
-        white *
+            horizon
 
-        vIntensity *
-
-        0.55;
+        );
 
     //////////////////////////////////////////////////////////
-    // EDGE FADE
+    // ALPHA
     //////////////////////////////////////////////////////////
 
     float alpha =
 
-        smoothstep(
+        glow * 0.35 +
 
-            1.0,
+        fresnel * 0.75;
 
-            0.45,
+    alpha =
 
-            r
+        clamp(
+
+            alpha,
+
+            0.0,
+
+            1.0
 
         );
-
-    alpha *=
-
-        0.35 +
-
-        flow*0.65;
-
-    alpha *=
-
-        0.75 +
-
-        vIntensity*0.5;
 
     //////////////////////////////////////////////////////////
     // OUTPUT

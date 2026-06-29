@@ -1,47 +1,45 @@
 import * as THREE from "three";
 
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { RENDERER } from "./Constants.js";
 
-import {
+export class Renderer {
 
-    RENDERER,
-    BLOOM
-
-} from "./Constants.js";
-
-export class Renderer{
-
-    constructor(scene,camera){
+    constructor() {
 
         //////////////////////////////////////////////////////
         // RENDERER
         //////////////////////////////////////////////////////
 
-        this.instance =
-        new THREE.WebGLRenderer({
+        this.instance = new THREE.WebGLRenderer({
 
-            antialias:
-                RENDERER.antialias,
+            antialias: RENDERER.antialias,
 
-            alpha:
-                RENDERER.alpha,
+            alpha: RENDERER.alpha,
 
-            powerPreference:
-                RENDERER.powerPreference
+            powerPreference: RENDERER.powerPreference
 
         });
 
+        //////////////////////////////////////////////////////
+        // COLOR
+        //////////////////////////////////////////////////////
+
+        this.instance.outputColorSpace =
+        RENDERER.outputColorSpace;
+
+        this.instance.toneMapping =
+        RENDERER.toneMapping;
+
+        this.instance.toneMappingExposure =
+        RENDERER.toneMappingExposure;
+
+        //////////////////////////////////////////////////////
+        // SIZE
+        //////////////////////////////////////////////////////
+
         this.instance.setPixelRatio(
 
-            Math.min(
-
-                window.devicePixelRatio,
-
-                RENDERER.maxPixelRatio
-
-            )
+            RENDERER.pixelRatio
 
         );
 
@@ -53,14 +51,15 @@ export class Renderer{
 
         );
 
-        this.instance.outputColorSpace =
-        THREE.SRGBColorSpace;
+        //////////////////////////////////////////////////////
+        // SHADOWS
+        //////////////////////////////////////////////////////
 
-        this.instance.toneMapping =
-        RENDERER.toneMapping;
+        this.instance.shadowMap.enabled = false;
 
-        this.instance.toneMappingExposure =
-        RENDERER.exposure;
+        //////////////////////////////////////////////////////
+        // DOM
+        //////////////////////////////////////////////////////
 
         document.body.appendChild(
 
@@ -68,64 +67,15 @@ export class Renderer{
 
         );
 
-        //////////////////////////////////////////////////////
-        // COMPOSER
-        //////////////////////////////////////////////////////
+    }
 
-        this.composer =
-        new EffectComposer(
+    //////////////////////////////////////////////////////////
+    // GET
+    //////////////////////////////////////////////////////////
 
-            this.instance
+    get() {
 
-        );
-
-        //////////////////////////////////////////////////////
-        // RENDER PASS
-        //////////////////////////////////////////////////////
-
-        this.renderPass =
-        new RenderPass(
-
-            scene,
-
-            camera
-
-        );
-
-        this.composer.addPass(
-
-            this.renderPass
-
-        );
-
-        //////////////////////////////////////////////////////
-        // BLOOM
-        //////////////////////////////////////////////////////
-
-        this.bloom =
-        new UnrealBloomPass(
-
-            new THREE.Vector2(
-
-                window.innerWidth,
-
-                window.innerHeight
-
-            ),
-
-            BLOOM.strength,
-
-            BLOOM.radius,
-
-            BLOOM.threshold
-
-        );
-
-        this.composer.addPass(
-
-            this.bloom
-
-        );
+        return this.instance;
 
     }
 
@@ -133,9 +83,15 @@ export class Renderer{
     // RENDER
     //////////////////////////////////////////////////////////
 
-    render(){
+    render(scene, camera) {
 
-        this.composer.render();
+        this.instance.render(
+
+            scene,
+
+            camera
+
+        );
 
     }
 
@@ -143,23 +99,9 @@ export class Renderer{
     // RESIZE
     //////////////////////////////////////////////////////////
 
-    resize(){
-
-        const width =
-        window.innerWidth;
-
-        const height =
-        window.innerHeight;
+    resize(width, height) {
 
         this.instance.setSize(
-
-            width,
-
-            height
-
-        );
-
-        this.composer.setSize(
 
             width,
 
@@ -173,43 +115,11 @@ export class Renderer{
 
                 window.devicePixelRatio,
 
-                RENDERER.maxPixelRatio
+                2
 
             )
 
         );
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // GET RENDERER
-    //////////////////////////////////////////////////////////
-
-    getRenderer(){
-
-        return this.instance;
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // GET COMPOSER
-    //////////////////////////////////////////////////////////
-
-    getComposer(){
-
-        return this.composer;
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // DISPOSE
-    //////////////////////////////////////////////////////////
-
-    dispose(){
-
-        this.instance.dispose();
-
-        this.composer.dispose();
 
     }
 

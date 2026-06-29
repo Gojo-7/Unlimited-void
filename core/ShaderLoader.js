@@ -1,6 +1,6 @@
-export class ShaderLoader{
+export class ShaderLoader {
 
-    constructor(){
+    constructor() {
 
         //////////////////////////////////////////////////////
         // CACHE
@@ -11,21 +11,20 @@ export class ShaderLoader{
     }
 
     //////////////////////////////////////////////////////////
-    // LOAD SINGLE SHADER
+    // LOAD TEXT FILE
     //////////////////////////////////////////////////////////
 
-    async load(path){
+    async load(path) {
 
-        if(this.cache.has(path)){
+        if (this.cache.has(path)) {
 
             return this.cache.get(path);
 
         }
 
-        const response =
-        await fetch(path);
+        const response = await fetch(path);
 
-        if(!response.ok){
+        if (!response.ok) {
 
             throw new Error(
 
@@ -35,8 +34,7 @@ export class ShaderLoader{
 
         }
 
-        const source =
-        await response.text();
+        const source = await response.text();
 
         this.cache.set(
 
@@ -54,13 +52,13 @@ export class ShaderLoader{
     // LOAD SHADER PAIR
     //////////////////////////////////////////////////////////
 
-    async loadPair(
+    async loadProgram(
 
         vertexPath,
 
         fragmentPath
 
-    ){
+    ) {
 
         const [
 
@@ -70,21 +68,13 @@ export class ShaderLoader{
 
         ] = await Promise.all([
 
-            this.load(
+            this.load(vertexPath),
 
-                vertexPath
-
-            ),
-
-            this.load(
-
-                fragmentPath
-
-            )
+            this.load(fragmentPath)
 
         ]);
 
-        return{
+        return {
 
             vertexShader,
 
@@ -95,108 +85,10 @@ export class ShaderLoader{
     }
 
     //////////////////////////////////////////////////////////
-    // PRELOAD ALL SHADERS
-    //////////////////////////////////////////////////////////
-
-    async preload(){
-
-        await Promise.all([
-
-            this.loadPair(
-
-                "./shaders/blackhole.vert",
-
-                "./shaders/blackhole.frag"
-
-            ),
-
-            this.loadPair(
-
-                "./shaders/accretion.vert",
-
-                "./shaders/accretion.frag"
-
-            ),
-
-            this.loadPair(
-
-                "./shaders/particles.vert",
-
-                "./shaders/particles.frag"
-
-            ),
-
-            this.loadPair(
-
-                "./shaders/nebula.vert",
-
-                "./shaders/nebula.frag"
-
-            )
-
-        ]);
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // GET SHADER
-    //////////////////////////////////////////////////////////
-
-    get(path){
-
-        if(!this.cache.has(path)){
-
-            throw new Error(
-
-                `Shader not loaded: ${path}`
-
-            );
-
-        }
-
-        return this.cache.get(path);
-
-    }
-
-    //////////////////////////////////////////////////////////
-    // GET SHADER PAIR
-    //////////////////////////////////////////////////////////
-
-    getPair(
-
-        vertexPath,
-
-        fragmentPath
-
-    ){
-
-        return{
-
-            vertexShader:
-
-                this.get(
-
-                    vertexPath
-
-                ),
-
-            fragmentShader:
-
-                this.get(
-
-                    fragmentPath
-
-                )
-
-        };
-
-    }
-
-    //////////////////////////////////////////////////////////
     // CLEAR CACHE
     //////////////////////////////////////////////////////////
 
-    clear(){
+    clear() {
 
         this.cache.clear();
 

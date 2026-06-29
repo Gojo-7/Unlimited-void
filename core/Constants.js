@@ -4,7 +4,7 @@ import * as THREE from "three";
 // RENDERER
 //////////////////////////////////////////////////////////////
 
-export const RENDERER = {
+export const RENDERER = Object.freeze({
 
     antialias: true,
 
@@ -12,27 +12,32 @@ export const RENDERER = {
 
     powerPreference: "high-performance",
 
+    outputColorSpace: THREE.SRGBColorSpace,
+
     toneMapping: THREE.ACESFilmicToneMapping,
 
-    exposure: 1.35,
+    toneMappingExposure: 1.25,
 
-    maxPixelRatio: 2
+    pixelRatio: Math.min(
+        window.devicePixelRatio,
+        2
+    )
 
-};
+});
 
 //////////////////////////////////////////////////////////////
 // CAMERA
 //////////////////////////////////////////////////////////////
 
-export const CAMERA = {
+export const CAMERA = Object.freeze({
 
     fov: 60,
 
     near: 0.1,
 
-    far: 3000,
+    far: 2000,
 
-    startPosition: new THREE.Vector3(
+    position: new THREE.Vector3(
 
         0,
         8,
@@ -40,160 +45,136 @@ export const CAMERA = {
 
     )
 
-};
+});
 
 //////////////////////////////////////////////////////////////
 // SCENE
 //////////////////////////////////////////////////////////////
 
-export const SCENE = {
+export const SCENE = Object.freeze({
 
     background: 0x000000,
 
-    fogColor: 0x000814,
+    fogColor: 0x020816,
 
-    fogDensity: 0.010
+    fogDensity: 0.008
 
-};
+});
 
 //////////////////////////////////////////////////////////////
 // LIGHTING
 //////////////////////////////////////////////////////////////
 
-export const LIGHTING = {
+export const LIGHTING = Object.freeze({
 
-    ambientColor: 0x4d78ff,
+    ambientColor: 0xffffff,
 
-    ambientIntensity: 0.35,
+    ambientIntensity: 0.25,
 
-    pointColor: 0x8fd2ff,
+    pointColor: 0x88cfff,
 
-    pointIntensity: 250,
+    pointIntensity: 180,
 
-    pointDistance: 600
+    pointDistance: 600,
 
-};
+    pointPosition: new THREE.Vector3(
+
+        0,
+        0,
+        0
+
+    )
+
+});
 
 //////////////////////////////////////////////////////////////
 // BLACK HOLE
 //////////////////////////////////////////////////////////////
 
-export const BLACK_HOLE = {
+export const BLACK_HOLE = Object.freeze({
 
     radius: 5,
 
-    segments: 128,
+    widthSegments: 128,
 
-    glowRadius: 7.5,
+    heightSegments: 128
 
-    horizonColor: 0x000000
-
-};
+});
 
 //////////////////////////////////////////////////////////////
 // ACCRETION DISK
 //////////////////////////////////////////////////////////////
 
-export const DISK = {
+export const ACCRETION = Object.freeze({
 
     innerRadius: 8,
 
-    outerRadius: 22,
+    outerRadius: 18,
 
-    thickness: 2.5,
+    tubularSegments: 256,
 
-    particleCount: 25000
+    radialSegments: 32
 
-};
+});
 
 //////////////////////////////////////////////////////////////
 // PARTICLES
 //////////////////////////////////////////////////////////////
 
-export const PARTICLES = {
+export const PARTICLES = Object.freeze({
 
     count: 120000,
 
-    innerRadius: 7,
+    innerRadius: 12,
 
     outerRadius: 180,
 
-    size: 3.0
+    pointSize: 2.5
 
-};
+});
 
 //////////////////////////////////////////////////////////////
 // NEBULA
 //////////////////////////////////////////////////////////////
 
-export const NEBULA = {
-
-    radius: 220,
+export const NEBULA = Object.freeze({
 
     layers: 6,
 
-    opacity: 0.22
+    size: 260,
 
-};
+    spacing: 6,
+
+    opacity: 0.18
+
+});
 
 //////////////////////////////////////////////////////////////
 // ASTEROIDS
 //////////////////////////////////////////////////////////////
 
-export const ASTEROIDS = {
+export const ASTEROIDS = Object.freeze({
 
-    count: 250,
+    count: 200,
 
-    innerRadius: 28,
+    minRadius: 35,
 
-    outerRadius: 130,
+    maxRadius: 120
 
-    minScale: 0.15,
-
-    maxScale: 1.5
-
-};
+});
 
 //////////////////////////////////////////////////////////////
-// BLOOM
+// CAMERA RIG
 //////////////////////////////////////////////////////////////
 
-export const BLOOM = {
+export const CAMERA_RIG = Object.freeze({
 
-    strength: 2.3,
+    orbitRadius: 45,
 
-    radius: 0.95,
+    orbitSpeed: 0.08,
 
-    threshold: 0.02
+    height: 8,
 
-};
+    verticalAmplitude: 2
 
-//////////////////////////////////////////////////////////////
-// COLORS
-//////////////////////////////////////////////////////////////
-
-export const COLORS = {
-
-    white: new THREE.Color(1,1,1),
-
-    blue: new THREE.Color(0.25,0.60,1.0),
-
-    cyan: new THREE.Color(0.65,0.90,1.0),
-
-    deepBlue: new THREE.Color(0.03,0.08,0.25)
-
-};
-
-//////////////////////////////////////////////////////////////
-// TIMING
-//////////////////////////////////////////////////////////////
-
-export const TIMING = {
-
-    cameraOrbitSpeed: 0.08,
-
-    diskRotationSpeed: 0.002,
-
-    particleSpeed: 1.0
-
-};
+});

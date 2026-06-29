@@ -1,0 +1,34 @@
+UnlimitedVoid/
+│
+├── index.html
+├── main.js
+│
+├── core/
+│   ├── Renderer.js
+│   ├── Scene.js
+│   ├── Camera.js
+│   ├── Clock.js
+│   ├── ShaderLoader.js
+│   └── Constants.js
+│
+├── objects/
+│   ├── BlackHole.js
+│   ├── AccretionDisk.js
+│   ├── ParticleField.js
+│   ├── Nebula.js
+│   ├── AsteroidField.js
+│   └── CameraRig.js
+│
+├── shaders/
+│   ├── accretion.vert
+│   ├── accretion.frag
+│   ├── blackhole.vert
+│   ├── blackhole.frag
+│   ├── particles.vert
+│   ├── particles.frag
+│   ├── nebula.vert
+│   └── nebula.frag
+│
+├── textures/
+│
+└── README.md
